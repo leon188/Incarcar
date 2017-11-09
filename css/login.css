@@ -1,0 +1,187 @@
+			*{
+				margin: 0;
+				padding: 0;
+				font-family: "微软雅黑";
+			}
+			a{
+				text-decoration: none;
+			}
+			html,body{
+				width: 100%;
+				height: 100%;
+				background: #ffffff;
+			}
+			img{
+				display: block;
+				width: 60%;
+				height: auto;
+				margin: 0 auto;
+			}
+			.word{
+				height: .4rem;
+				font: .26rem/.4rem "微软雅黑";
+				color: black;
+				text-align: center;
+				
+			}
+			.wordred{
+				height: .6rem;
+				font: .28rem/.8rem "微软雅黑";
+				color: coral;
+				text-align: center;
+			}
+			.class{-webkit-tap-highlight-color:transparent;}
+			.img{
+				height: 1.9rem;
+				width: 100%;
+				padding-top: 1rem;
+			}
+			.img img{
+				display: block;
+				height: 1.12rem;
+				width: 1.59rem;
+				margin:  0 auto;
+				
+			}
+			.input{
+				height: 0.92rem;
+				width: 92.2%;
+				margin:  0 auto;
+				
+				line-height: 0.86rem;
+				color: #797878;
+				font-size: 0.26rem;
+				
+			}
+			.input:nth-of-type(1){
+				border-bottom: solid 1px #DEDEDE;
+				padding-bottom: 3px;
+			}
+			.input span{
+				display: inline-block;
+				height: 0.7rem;
+				width: 25%;
+				
+				margin-top: 0.11rem;
+				line-height: 0.72rem;
+				text-align: center;
+				color: #353535;
+			}
+			.code{
+				-webkit-appearance: none; 
+				border: none;
+				border-radius: 1rem;
+				-webkit-border-radius: 1rem;
+			    -moz-border-radius: 1rem;
+			    height: .72rem;
+				width: 25%;
+				font: 0.22rem/0.5rem "微软雅黑";
+				text-align: center;
+				background: #3383FF;
+				float: right;
+				color:white ;
+				margin-top: 0.1rem;
+				padding: 0 0.1rem;
+				
+			}
+			#phoneNumber,#passWord{
+				-webkit-tap-highlight-color:transparent;
+				height: 0.76rem;
+				margin:  0 auto;
+				width: 45%;
+				border: none;
+				outline:none;
+				font: 0.28rem "微软雅黑";
+				background: none;
+				border-radius: 3px;
+				padding-left: 5px;
+				color: black;
+			}
+			.findP{
+				color: white;
+				height: 0.7rem;
+				width: 81.5%;
+				margin:  0 auto;
+				text-align: center;
+				font: 0.22rem/0.7rem "微软雅黑";
+				
+			}
+			.findP a{
+				color: white;
+			}
+			#login{
+				height: 0.8rem;
+				width: 4.3rem;
+				margin:  0 auto;
+				border-radius: 20px;
+				background: #3383FF;
+				font: 0.35rem/0.8rem "微软雅黑";
+				color: white;
+				text-align: center;
+				position: absolute;
+			    left: 0;
+				right: 0;
+				top:10.3rem;
+				
+			}
+			.log{
+				height: 0.7rem;
+			    width: 92%;
+			    margin: auto;
+			    font: 0.2rem/0.7rem "微软雅黑";
+			    color: gray;
+			    text-align: center;
+			    position: absolute;
+			    left: 0;
+				right: 0;
+				top:9.3rem
+			}
+			.pic{
+				width: 100%;
+				height: 6.7rem;
+				background: url(../img/login_lunbo.jpg) no-repeat;
+				background-size:100% 100% ;
+				position: relative;
+			}
+
+			.pic{
+				width: 100%;
+				height: 6.7rem;
+				background: url(../img/pic_yaoqingzhuce@3x.png) no-repeat;
+				background-size:100% 100% ;
+				position: relative;
+			}
+			.mengceng{
+				height: .4rem;
+				width: 93%;
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: -1px;
+				margin: auto;
+				background:white;
+				background-size: 2.24rem .4rem;
+				z-index: 1000;
+				border-top-left-radius:8px;
+				border-top-right-radius:8px;
+			}
+			.login_box{
+				height: 2.4rem;
+				width: 93%;
+				background: white;
+				position: absolute;
+				top:6.7rem;
+				left: 0;
+				right: 0;
+				margin: auto;
+				box-shadow:0px 0px 20px rgba(175,175,175,.3);
+				border-bottom-left-radius:8px;
+				border-bottom-right-radius:8px;
+			}
+			
+			
+@media only screen and (max-height:480px ) {
+	#login{
+		margin-top: 0.15rem;
+	}
+}

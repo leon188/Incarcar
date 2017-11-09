@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+	<head>
+		<meta charset="UTF-8">
+
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>手机认证</title>
+		<link rel="stylesheet" type="text/css" href="css/login.css"/>
+	
+		<link rel="stylesheet" type="text/css" href="css/weui.css"/>
+		<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/weui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="lib/angular.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/md5.js" type="text/javascript" charset="utf-8"></script>
+		<script src="lib/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/wxposition.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+	<body ng-controller="myctr">
+		<div class="pic">
+			<div class="mengceng">
+				
+			</div>
+		</div>
+		<div class="login_box">
+			<div class="input">
+				<span>手机号</span>
+				
+				<input type="text" id="phoneNumber" placeholder="请输入手机号"/>
+				
+			</div>
+			
+			<div class="input" style="margin-top: .2rem;">
+				<span>验证码</span>
+				<input type="text" name="" id="passWord" placeholder="请输入验证码" onchange="textcode()"/>
+				<input type="button" class="code" value="获取验证码" />
+				
+			</div>
+		</div>
+		<p class="log">点击认证即表示您已同意<a href="https://ekuaitu.com/h5/ekt/agreement.html" style="color: #3383FF;">《出行用户协议》</a></p>
+		
+		<div id="login">
+			手机认证
+		</div>
+		
+		
+	</body>
+	<script src="lib/flexible.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		
+		var fn,cityCode;
+		var app = angular.module('myapp', []);
+		app.controller('myctr', function($scope, $http,$timeout) {
+		 	fn=function  (a,b){
+		 		$http.jsonp("https://restapi.amap.com/v3/geocode/regeo?output=json&location="+a+","+b+"&key=986f04d9cc61ffdfa65174e50cc53b6b&radius=100&extensions=base" +"&callback=JSON_CALLBACK")
+				.success(function(data1) {
+					cityCode=data1.regeocode.addressComponent.citycode;
+					
+				});
+		 	}
+		 })
+		//页面	
+
+		var count = 120;
+		var timer;
+		var phone = $("#phoneNumber");
+		var code = $("#passWord");
+		var uid1 = getWinUrl("uid");
+		
+		
+		//手机号验证，向后台发送数据
+		function sendPhone () {
+			if(/^1[3|4|5|7|8]\d{9}$/.test(phone.val())) {
+				$(".code").attr("disabled", "true");
+				$(".code").css("background", "darkgray"); 
+        		$(".code").val("剩余" + count + "s"); 
+        		timer = setInterval(setTime,1000);
+                var timestamp = (new Date()).valueOf();
+                var sign = timestamp+"ekuaitu0"
+                var entrysign = MD5(sign)
+        		
+				$.ajax({
+					type:"post",
+					url:ektUrl+"/message/send-message.json",
+                    data:{
+                        phoneNum:phone.val(),
+                        timestamp:timestamp,
+                        sign:entrysign,
+                        platform:0,
+                        appVersion:appVersion
+                    },
+					async:true,
+					success:function (data) {
+						if(data.status==200){
+
+						}else {
+                            weui.Loading.info(data.message)
+						}
+					
+					},
+					error:function () {
+						weui.Loading.info("网络错误请稍后重试！")
+				
+					}
+				});
+        	}else{
+        		weui.Loading.info("请输入正确11位手机号码！")
+				
+			}
+		}
+		//倒计时效果
+		function setTime () {
+			if (count == 0) {                  
+		        window.clearInterval(timer);//停止计时器  
+		        $(".code").removeAttr("disabled");//启用按钮  
+		        $(".code").val("重新发送"); 
+		        $(".code").css("background", "#2caf61"); 
+		        count = 120;
+		        //code.val("") ; //清除验证码。   
+		    }  
+		    else {  
+		        count--;
+		        $(".code").val("剩余" + count + "s");  
+		    }
+		}
+		
+		
+		function textcode(){
+			var num=$('#passWord').val();
+			if (!/^\d{4}$/.test(num)) {
+				
+				weui.Loading.info("请输入正确4位数字验证码！")
+			}
+		}
+		
+		
+		//事件调用
+		$(".code").click(function () {
+			sendPhone ();
+		})
+		
+		//登录 
+		$("#login").click(function () {
+			if(cityCode == null || cityCode == undefined){
+				cityCode=""
+			}
+			
+			//&device=   &inviteCode=
+			if (code.val()!="") {
+				$.ajax({
+					type:"post",
+					url:ektUrl+"/login/mobile-login.json?phoneNum="+phone.val()+"&code="+code.val()+"&platform=0"+"&device=0"+"&areaCode="+cityCode+"&inviteCode="+uid1,
+					async:true,
+					success:function(data){
+						console.log(data);
+						if (data.status==200) {
+							console.log(data.attachment.isNewUser)
+							var userid = data.attachment.userModel.id;
+							var usertoken = data.attachment.userModel.token;
+							var depositStatus = data.attachment.userModel.depositStatus;
+							var phoneNum = data.attachment.userModel.phoneNum;
+							window.localStorage.uid = userid;
+							window.localStorage.token = usertoken;
+							window.localStorage.phoneNum = phoneNum;
+							
+						
+							
+							location.href = "saoma.html?depositStatus="+depositStatus;
+	            			
+	            		}else{
+							weui.alert(data.message,"小兔提示:")
+						}
+					},
+					error:function () {
+						
+					}
+				});
+			} else{
+				weui.Loading.info("请输入正确4位数字验证码！")
+			}
+		})
+	</script>
+	
+</html>
+
